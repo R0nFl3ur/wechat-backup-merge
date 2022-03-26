@@ -54,9 +54,10 @@ def select_conf_file():
     conf_path = 'example_path.conf'
     if exists('path.conf'):
         conf_path = 'path.conf'
-        print colorize("we will read config from path.conf file.", fg=GREEN)
+        #print("we will read config from path.conf file.", fg=GREEN)
+        print("we will read config from path.conf file.")
     else:
-        print "we can't find path.conf file, so we using the example_path.conf file as the config file."
+        print("we can't find path.conf file, so we using the example_path.conf file as the config file.")
 
     src = None
     dst = None
@@ -71,7 +72,7 @@ def select_conf_file():
             src_value = src_re.groups()[0]
             if src_value is not None:
                 src = handle_home_case(src_value)
-                print 'the source directory is assigned to ' + colorize(src, fg=BLACK, bg=GREEN)
+                print( 'the source directory is assigned to ' + colorize(src, fg=BLACK, bg=GREEN))
                 continue
 
         dst_re = dst_value_re.match(line)
@@ -79,10 +80,10 @@ def select_conf_file():
             dst_value = dst_re.groups()[0]
             if dst_value is not None:
                 dst = handle_home_case(dst_value)
-                print 'the target directory is assigned to ' + colorize(dst, fg=BLACK, bg=GREEN)
+                print( 'the target directory is assigned to ' + colorize(dst, fg=BLACK, bg=GREEN))
                 continue
 
-        print colorize('unknown line on conf file: ' + line)
+        print('unknown line on conf file: ' + line)
 
     conf_file.close()
 
@@ -95,8 +96,8 @@ def spinning_cursor():
 
 def show_spinner(thread):
     spinner = spinning_cursor()
-    while thread.isAlive():
-        sys.stdout.write(spinner.next())
+    while thread.is_alive():
+        sys.stdout.write(next(spinner))
         sys.stdout.flush()
         time.sleep(0.1)
         sys.stdout.write('\b')

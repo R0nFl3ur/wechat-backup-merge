@@ -25,13 +25,15 @@ from os.path import join, exists, getsize
 from shutil import copyfile
 from threading import Thread
 
-from wechat_backup_utils import colorize, YELLOW, RED, GREEN, BLACK, handle_home_case, select_conf_file, show_spinner
+#from wechat_backup_utils import colorize, YELLOW, RED, GREEN, BLACK, handle_home_case, select_conf_file, show_spinner
+from wechat_backup_utils import handle_home_case, select_conf_file, show_spinner
 
 __version__ = '1.0.0'
 
 
 def replace_file(src_path, dst_path, name):
-    print colorize('replace the file: ' + name, fg=YELLOW)
+    # print ('replace the file: ' + name, fg=YELLOW)
+    print ('replace the file: ' + name)
     remove(dst_path)
     copyfile(src_path, dst_path)
 
@@ -41,7 +43,8 @@ def merge():
         if not exists(dst_subdir):
             makedirs(dst_subdir)
         copyfile(src_file_path, dst_file_path)
-        print colorize('copy the new file: ' + file_name, fg=RED)
+        # print('copy the new file: ' + file_name, fg=RED)
+        print('copy the new file: ' + file_name)
     else:
         # compare the file size
         src_file_size = getsize(src_file_path)
@@ -54,13 +57,14 @@ def merge():
             if not filecmp.cmp(src_file_path, dst_file_path):
                 replace_file(src_file_path, dst_file_path, file_name)
             else:
-                print colorize('no need to replace ' + file_name, fg=GREEN)
+                print('no need to replace ' + file_name)
+                #print('no need to replace ' + file_name, fg=GREEN)
 
 
 src, dst, conf_path = select_conf_file()
 
 if src is None or dst is None:
-    exit(colorize("we can't find source directory or target directory on " + conf_path))
+    exit("we can't find source directory or target directory on " + conf_path)
 
 RELATE_DIR = re.compile(r'' + src + '/(.*)')
 for src_subdir, dirs, files in walk(src):
@@ -76,11 +80,11 @@ for src_subdir, dirs, files in walk(src):
 
         src_file_path = join(src_subdir, file_name)
         dst_file_path = join(dst_subdir, file_name)
-        print 'compare ' + file_name + ' on ' + relate_dir
+        print('compare ' + file_name + ' on ' + relate_dir)
 
         thread = Thread(target=merge)
         thread.start()
 
         show_spinner(thread)
 
-print 'everything is done!'
+print('everything is done!')
